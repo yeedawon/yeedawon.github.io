@@ -26,7 +26,7 @@ div class="callout callout-info">
 | 교재 | 혼자 공부하는 네트워크 (한빛미디어) |
 | 강의 ① | [youtu.be/c_4x5M_GwD8](https://youtu.be/c_4x5M_GwD8?si=Mh525VtBjlHnpTYI){:target="_blank"} |
 | 강의 ② | [youtu.be/k7G1wXTB8Fk](https://youtu.be/k7G1wXTB8Fk?si=UhoHYeayG7C_xnFK){:target="_blank"} |
-| 원본 노트 | 수기 복습 노트 — <a href="/assets/files/네트워크.pdf" download>PDF 다운로드</a> |
+| 원본 노트 | 수기 복습 노트 — <a href="/assets/files/network.pdf" download>PDF 다운로드</a> |
 | 정리 도구 | 생성형 AI (Claude) — 표·다이어그램 구조화, 내용 요약 |
 
 ## 시리즈 구성
