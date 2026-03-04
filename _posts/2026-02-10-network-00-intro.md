@@ -8,13 +8,10 @@ author: yeedawon
 excerpt: "「혼자 공부하는 네트워크」 강의와 직접 필기한 노트를 기반으로, 생성형 AI를 활용해 정리한 네트워크 시리즈의 소개 글입니다."
 ---
 
-div class="callout callout-info">
   <div class="callout-title">📝 이 시리즈에 대하여</div>
   이 네트워크 시리즈는 <strong>「혼자 공부하는 네트워크」</strong> 교재와 관련 강의를 수강하며 작성한
   <strong>손필기 복습 노트</strong>를 원본 자료로 하여, <strong>생성형 AI</strong>를 활용해
-  구조화·요약한 포스트입니다.<br><br>
-  원본 노트의 내용을 바탕으로 AI가 표·다이어그램·코드 형태로 재구성했으며,
-</div>
+  구조화·요약한 포스트입니다.<br>
 
 ## 원본 자료
 
