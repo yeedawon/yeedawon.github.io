@@ -4,22 +4,19 @@ title: About
 permalink: /about/
 ---
 
-## 👋 안녕하세요, yeedawon입니다
+## Introduction myself
+건국대학교 컴퓨공학부 재학중 (2025~) (KU자유전공학부 => 컴퓨터공학부 / 응용통계학과)
+> *Freshman Dept. of Free Major (1st) → Computer Science / Appllied Statistics (2nd)*
 
-건국대학교 자유전공학부에서 출발해 컴퓨터공학부로 전환을 준비 중인 학생입니다.  
-**AWS Cloud Club at Konkuk** 학술 동아리에서 활동하며 백엔드 개발과 AI/ML을 공부하고 있습니다.
+## 🛠 현재 학습 중
 
-> *Freshman Dept. of Free Major (1st) → hoping for Computer Science (2nd)*
+- **Backend && Network** 
+- **Cloud** — (AWS)
+- **Tools** — Git, IntelliJ IDEA, JAVA | (공부 중) Python, C++, R 
+- **AI** - Deep Learning(신경망/CNN/RAG ~ ing)
+- **Statistics** 
 
-## 🛠 현재 학습 중인 스택
-
-- **Language** — Java 21
-- **Backend** — Spring Boot 4.x, Spring MVC, Thymeleaf
-- **Network** — TCP/IP 스택, HTTP, DNS, AWS 네트워킹
-- **Cloud** — AWS (공부 중)
-- **Tools** — Git, Gradle, IntelliJ IDEA
-
-## 📚 진행 중인 학습
+## 📚 진행 중인 학습 post
 
 | 분야 | 내용 | 코드 레포 |
 |------|------|---------|
