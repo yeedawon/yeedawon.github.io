@@ -1,0 +1,34 @@
+---
+layout: default
+---
+{% assign posts_by_year = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
+{% for yg in posts_by_year %}
+<div class="year-block">
+  <div class="year-header">
+    <span class="year-label">{{ yg.name }}</span>
+    <span class="year-count">{{ yg.items | size }}</span>
+  </div>
+  <ul class="post-list">
+    {% for post in yg.items %}
+    <li class="post-row">
+      <a class="title-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <div class="meta">
+        <span>{{ post.date | date: "%b %d" }}</span>
+        {% if post.categories[0] == "springboot" %}
+          <span class="badge badge-sb">Spring Boot</span>
+        {% elsif post.categories[0] == "network" %}
+          <span class="badge badge-net">Network</span>
+        {% else %}
+          <span class="badge badge-etc">{{ post.categories[0] }}</span>
+        {% endif %}
+        <span>·</span>
+        <span>{{ post.content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
+      </div>
+      {% if post.excerpt %}
+      <p class="excerpt">{{ post.excerpt | strip_html | truncate: 130 }}</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endfor %}

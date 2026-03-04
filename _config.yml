@@ -1,0 +1,33 @@
+title: "DAWON's BLOG"
+tagline: "AI/ML"
+description: "wanna be a AI/ML Engineer"
+url: "https://yeedawon.github.io"
+baseurl: ""
+author:
+  name: yeedawon
+  github: yeedawon
+
+permalink: /:categories/:year/:month/:day/:title/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author: yeedawon
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
