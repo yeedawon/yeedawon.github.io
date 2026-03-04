@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="600" fill="#fff"/>
+
+    <defs>
+        <style>
+            body { font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'; }
+            .title { font-size: 18px; font-weight: 600; fill: #333; }
+            .label { font-size: 14px; fill: #333; }
+            .subtext { font-size: 12px; fill: #666; }
+            .code { font-size: 12px; fill: #333; font-family: monospace; }
+            .header { font-size: 16px; font-weight: 600; fill: #333; }
+            .box { stroke: #ddd; stroke-width: 1.5; fill: #f9f9f9; rx: 8; }
+            .box-header { stroke: #ddd; stroke-width: 1.5; fill: #f5f5f5; rx: 8; }
+            .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+            .dashed { stroke-dasharray: 5,5; }
+            .text-center { text-anchor: middle; }
+            .network-box { stroke: #999; stroke-width: 2; fill: #f9f9f9; rx: 8; }
+            .address { font-size: 13px; font-family: monospace; fill: #333; }
+        </style>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#666" />
+        </marker>
+    </defs>
+
+
+    <!-- Title -->
+    <text x="400" y="40" class="title text-center">ARP (Address Resolution Protocol)</text>
+    
+    <!-- Step 1: ARP Request -->
+    <g id="step1">
+        <rect x="50" y="100" width="700" height="120" class="network-box"/>
+        <text x="70" y="130" class="header">① ARP 요청 (Broadcast)</text>
+        <text x="70" y="160" class="subtext">Q: 192.168.1.5의 MAC 주소를 가진 분 있나요?</text>
+        <text x="70" y="185" class="subtext">→ LAN 전체에 뿌림 (모든 호스트가 수신)</text>
+        <circle cx="750" cy="160" r="8" fill="#0066cc"/>
+    </g>
+    
+    <!-- Step 2: ARP Response -->
+    <g id="step2">
+        <rect x="50" y="250" width="700" height="120" class="network-box"/>
+        <text x="70" y="280" class="header">② ARP 응답 (Unicast)</text>
+        <text x="70" y="310" class="subtext">A: 저는 192.168.1.5이고, MAC 주소는 aa:bb:cc:dd:ee:ff입니다</text>
+        <text x="70" y="335" class="subtext">→ 요청한 호스트에게만 응답</text>
+        <circle cx="750" cy="310" r="8" fill="#00cc00"/>
+    </g>
+    
+    <!-- Step 3: ARP Cache -->
+    <g id="step3">
+        <rect x="50" y="400" width="700" height="120" class="network-box"/>
+        <text x="70" y="430" class="header">③ ARP 테이블 캐시</text>
+        <text x="70" y="460" class="subtext">IP ↔ MAC 주소 매핑을 메모리에 저장</text>
+        <text x="70" y="485" class="subtext">→ TTL(Time To Live) 시간 동안 유지 (보통 300초)</text>
+        <circle cx="750" cy="460" r="8" fill="#ffcc00"/>
+    </g>
+</svg>

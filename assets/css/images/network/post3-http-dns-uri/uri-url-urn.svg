@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 20px; font-weight: bold; fill: #333; }
+      .subtitle { font-size: 14px; fill: #333; font-weight: 600; }
+      .text { font-size: 13px; fill: #333; }
+      .small { font-size: 11px; fill: #999; }
+      .label { font-size: 12px; fill: #666; font-weight: 500; }
+      .code { font-size: 12px; font-family: "Courier New", monospace; fill: #d73a49; }
+      .arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-thick { fill: none; stroke: #333; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .arrow-dashed { fill: none; stroke: #333; stroke-width: 2; stroke-dasharray: 5,5; marker-end: url(#arrowhead); }
+      .box { fill: #fff; stroke: #ddd; stroke-width: 1.5; }
+      .box-highlight { fill: #e8f4f8; stroke: #ddd; stroke-width: 1.5; }
+      .box-response { fill: #f0f5e8; stroke: #ddd; stroke-width: 1.5; }
+      .box-uri { fill: #fff3e0; stroke: #ddd; stroke-width: 1.5; }
+      .box-dns { fill: #f3e5f5; stroke: #ddd; stroke-width: 1.5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+<text x="400" y="35" text-anchor="middle" class="title">URI, URL, URN 관계</text><rect x="50" y="70" width="700" height="380" rx="8" class="box-uri" /><text x="70" y="100" text-anchor="start" class="subtitle">URI (Uniform Resource Identifier)</text><text x="70" y="125" text-anchor="start" class="text">자원을 식별할 수 있는 모든 정보</text><rect x="70" y="160" width="660" height="120" rx="8" class="box" /><text x="90" y="185" text-anchor="start" class="subtitle">URL (Uniform Resource Locator)</text><text x="90" y="210" text-anchor="start" class="text">위치로 자원을 식별</text><text x="90" y="235" text-anchor="start" class="code">https://api.example.com/articles</text><text x="90" y="255" text-anchor="start" class="small">웹에서 가장 일반적인 URI 형태</text><rect x="70" y="300" width="660" height="120" rx="8" class="box" /><text x="90" y="325" text-anchor="start" class="subtitle">URN (Uniform Resource Name)</text><text x="90" y="350" text-anchor="start" class="text">이름으로 자원을 식별</text><text x="90" y="375" text-anchor="start" class="code">urn:isbn:979-11-91905-27-4</text><text x="90" y="395" text-anchor="start" class="small">위치와 무관하게 영구적으로 식별</text></svg>

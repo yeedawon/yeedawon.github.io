@@ -1,0 +1,68 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    body { background-color: #ffffff; }
+    .bg { fill: #ffffff; }
+    text { fill: #333; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+    .label { font-size: 12px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .subtitle { font-size: 13px; font-weight: 600; }
+    .box { fill: #ffffff; stroke: #ddd; stroke-width: 2; rx: 8; }
+    .header-cell { fill: #ffffff; stroke: #ddd; stroke-width: 1; }
+    .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .dashed { stroke-dasharray: 5,5; }
+    .lost { stroke: #ff0000; stroke-width: 3; }
+    .line { stroke: #333; stroke-width: 1; }
+    .timeline { stroke: #333; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+  <rect class="bg" width="800" height="500"/>
+
+  <text x="400" y="30" text-anchor="middle" class="title">TCP 3-way Handshake</text>
+  
+  <!-- Timelines -->
+  <line x1="150" y1="80" x2="150" y2="420" class="timeline"/>
+  <line x1="650" y1="80" x2="650" y2="420" class="timeline"/>
+  
+  <!-- Host labels -->
+  <text x="150" y="60" text-anchor="middle" class="subtitle">호스트 A</text>
+  <text x="150" y="75" text-anchor="middle" class="label">(클라이언트)</text>
+  
+  <text x="650" y="60" text-anchor="middle" class="subtitle">호스트 B</text>
+  <text x="650" y="75" text-anchor="middle" class="label">(서버)</text>
+  
+  <!-- Initial states -->
+  <text x="150" y="110" text-anchor="middle" class="label">[CLOSED]</text>
+  <text x="650" y="110" text-anchor="middle" class="label">[LISTEN]</text>
+  
+  <!-- Arrow 1: SYN -->
+  <path d="M 160 140 L 640 140" class="arrow"/>
+  <text x="400" y="135" text-anchor="middle" class="label" font-weight="600">① SYN (seq=100)</text>
+  <text x="400" y="150" text-anchor="middle" class="label">연결 시작합니다</text>
+  
+  <!-- State after SYN -->
+  <text x="150" y="180" text-anchor="middle" class="label">[SYN_SENT]</text>
+  <text x="650" y="180" text-anchor="middle" class="label">[SYN_RCVD]</text>
+  
+  <!-- Arrow 2: SYN+ACK -->
+  <path d="M 640 220 L 160 220" class="arrow"/>
+  <text x="400" y="215" text-anchor="middle" class="label" font-weight="600">② SYN+ACK (seq=200, ack=101)</text>
+  <text x="400" y="230" text-anchor="middle" class="label">OK! 내 번호는 200</text>
+  
+  <!-- Arrow 3: ACK -->
+  <path d="M 160 280 L 640 280" class="arrow"/>
+  <text x="400" y="275" text-anchor="middle" class="label" font-weight="600">③ ACK (ack=201)</text>
+  <text x="400" y="290" text-anchor="middle" class="label">확인</text>
+  
+  <!-- Final states -->
+  <text x="150" y="330" text-anchor="middle" class="label">[ESTABLISHED]</text>
+  <text x="650" y="330" text-anchor="middle" class="label">[ESTABLISHED]</text>
+  
+  <!-- Data transfer indication -->
+  <rect x="100" y="380" width="600" height="40" class="box"/>
+  <text x="400" y="405" text-anchor="middle" class="label" font-weight="600">데이터 송수신 시작</text>
+
+</svg>

@@ -1,0 +1,60 @@
+<svg width="600" height="450" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    body { background-color: #ffffff; }
+    .bg { fill: #ffffff; }
+    text { fill: #333; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+    .label { font-size: 12px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .subtitle { font-size: 13px; font-weight: 600; }
+    .box { fill: #ffffff; stroke: #ddd; stroke-width: 2; rx: 8; }
+    .header-cell { fill: #ffffff; stroke: #ddd; stroke-width: 1; }
+    .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .dashed { stroke-dasharray: 5,5; }
+    .lost { stroke: #ff0000; stroke-width: 3; }
+    .line { stroke: #333; stroke-width: 1; }
+    .timeline { stroke: #333; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+  <rect class="bg" width="600" height="450"/>
+
+  <text x="300" y="30" text-anchor="middle" class="title">ARQ: Stop-and-Wait</text>
+  
+  <!-- Sender and Receiver -->
+  <text x="100" y="80" text-anchor="middle" class="subtitle">송신자</text>
+  <text x="500" y="80" text-anchor="middle" class="subtitle">수신자</text>
+  
+  <!-- Segment 1 -->
+  <g id="seg1">
+    <path d="M 120 120 L 480 120" class="arrow"/>
+    <text x="300" y="115" text-anchor="middle" class="label">seg1</text>
+  </g>
+  
+  <!-- ACK 1 -->
+  <g id="ack1">
+    <path d="M 480 160 L 120 160" class="arrow"/>
+    <text x="300" y="155" text-anchor="middle" class="label">ACK1</text>
+  </g>
+  
+  <!-- Segment 2 -->
+  <g id="seg2">
+    <path d="M 120 200 L 480 200" class="arrow"/>
+    <text x="300" y="195" text-anchor="middle" class="label">seg2</text>
+  </g>
+  
+  <!-- ACK 2 -->
+  <g id="ack2">
+    <path d="M 480 240 L 120 240" class="arrow"/>
+    <text x="300" y="235" text-anchor="middle" class="label">ACK2</text>
+  </g>
+  
+  <!-- Note -->
+  <rect x="50" y="300" width="500" height="100" class="box"/>
+  <text x="300" y="325" text-anchor="middle" class="label" font-weight="600">특징</text>
+  <text x="70" y="350" class="label">• ACK 받기 전까지 다음 세그먼트 전송 불가</text>
+  <text x="70" y="375" class="label">• 효율성 낮음 (Timeout 기다리는 시간 존재)</text>
+
+</svg>

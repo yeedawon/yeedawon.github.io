@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="300" fill="#fff"/>
+
+    <defs>
+        <style>
+            body { font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'; }
+            .title { font-size: 18px; font-weight: 600; fill: #333; }
+            .label { font-size: 14px; fill: #333; }
+            .subtext { font-size: 12px; fill: #666; }
+            .code { font-size: 12px; fill: #333; font-family: monospace; }
+            .header { font-size: 16px; font-weight: 600; fill: #333; }
+            .box { stroke: #ddd; stroke-width: 1.5; fill: #f9f9f9; rx: 8; }
+            .box-header { stroke: #ddd; stroke-width: 1.5; fill: #f5f5f5; rx: 8; }
+            .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+            .dashed { stroke-dasharray: 5,5; }
+            .text-center { text-anchor: middle; }
+            .network-box { stroke: #999; stroke-width: 2; fill: #f9f9f9; rx: 8; }
+            .address { font-size: 13px; font-family: monospace; fill: #333; }
+        </style>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#666" />
+        </marker>
+    </defs>
+
+
+    <!-- Title -->
+    <text x="400" y="40" class="title text-center">IPv4 주소 구조</text>
+    
+    <!-- Four octets -->
+    <g id="octets">
+        <!-- 192 -->
+        <rect x="100" y="80" width="120" height="80" class="box"/>
+        <text x="160" y="125" class="address text-center" font-size="24">192</text>
+        <text x="160" y="155" class="label text-center">8 bit</text>
+        
+        <!-- 168 -->
+        <rect x="240" y="80" width="120" height="80" class="box"/>
+        <text x="300" y="125" class="address text-center" font-size="24">168</text>
+        <text x="300" y="155" class="label text-center">8 bit</text>
+        
+        <!-- 1 -->
+        <rect x="380" y="80" width="120" height="80" class="box"/>
+        <text x="440" y="125" class="address text-center" font-size="24">1</text>
+        <text x="440" y="155" class="label text-center">8 bit</text>
+        
+        <!-- 100 -->
+        <rect x="520" y="80" width="120" height="80" class="box"/>
+        <text x="580" y="125" class="address text-center" font-size="24">100</text>
+        <text x="580" y="155" class="label text-center">8 bit</text>
+    </g>
+    
+    <!-- Annotations -->
+    <g id="annotations">
+        <!-- 32 bit arrow -->
+        <line x1="80" y1="200" x2="660" y2="200" class="arrow"/>
+        <text x="370" y="225" class="label text-center">← 32 bit →</text>
+        
+        <!-- Total addresses -->
+        <text x="400" y="270" class="label text-center">총 2³² ≈ 42억 개</text>
+    </g>
+</svg>

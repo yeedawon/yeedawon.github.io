@@ -1,0 +1,116 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    body { background-color: #ffffff; }
+    .bg { fill: #ffffff; }
+    text { fill: #333; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+    .label { font-size: 12px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .subtitle { font-size: 13px; font-weight: 600; }
+    .box { fill: #ffffff; stroke: #ddd; stroke-width: 2; rx: 8; }
+    .header-cell { fill: #ffffff; stroke: #ddd; stroke-width: 1; }
+    .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .dashed { stroke-dasharray: 5,5; }
+    .lost { stroke: #ff0000; stroke-width: 3; }
+    .line { stroke: #333; stroke-width: 1; }
+    .timeline { stroke: #333; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+  <rect class="bg" width="900" height="600"/>
+
+  <text x="450" y="30" text-anchor="middle" class="title">TCP State Transition Diagram</text>
+  
+  <!-- CLOSED state (center) -->
+  <circle cx="450" cy="100" r="40" fill="none" stroke="{}" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" class="label" font-weight="600">CLOSED</text>
+  
+  <!-- LISTEN state -->
+  <rect x="150" y="180" width="120" height="60" class="box"/>
+  <text x="210" y="215" text-anchor="middle" class="label" font-weight="600">LISTEN</text>
+  
+  <!-- SYN_SENT state -->
+  <rect x="680" y="180" width="120" height="60" class="box"/>
+  <text x="740" y="215" text-anchor="middle" class="label" font-weight="600">SYN_SENT</text>
+  
+  <!-- SYN_RECEIVED state -->
+  <rect x="150" y="320" width="120" height="60" class="box"/>
+  <text x="210" y="345" text-anchor="middle" class="label" font-size="12">SYN_RCVD</text>
+  
+  <!-- ESTABLISHED state -->
+  <rect x="400" y="320" width="140" height="60" class="box"/>
+  <text x="470" y="355" text-anchor="middle" class="label" font-weight="600">ESTABLISHED</text>
+  
+  <!-- FIN_WAIT_1 state -->
+  <rect x="100" y="460" width="120" height="60" class="box"/>
+  <text x="160" y="495" text-anchor="middle" class="label" font-size="12">FIN_WAIT_1</text>
+  
+  <!-- CLOSE_WAIT state -->
+  <rect x="280" y="460" width="120" height="60" class="box"/>
+  <text x="340" y="495" text-anchor="middle" class="label" font-size="12">CLOSE_WAIT</text>
+  
+  <!-- FIN_WAIT_2 state -->
+  <rect x="460" y="460" width="120" height="60" class="box"/>
+  <text x="520" y="495" text-anchor="middle" class="label" font-size="12">FIN_WAIT_2</text>
+  
+  <!-- LAST_ACK state -->
+  <rect x="640" y="460" width="120" height="60" class="box"/>
+  <text x="700" y="495" text-anchor="middle" class="label" font-size="12">LAST_ACK</text>
+  
+  <!-- TIME_WAIT state -->
+  <rect x="280" y="560" width="120" height="60" class="box"/>
+  <text x="340" y="595" text-anchor="middle" class="label" font-size="12">TIME_WAIT</text>
+  
+  <!-- Arrows -->
+  <!-- CLOSED to LISTEN -->
+  <path d="M 410 130 Q 310 160 210 180" class="arrow"/>
+  <text x="300" y="150" class="label" font-size="11">listen()</text>
+  
+  <!-- CLOSED to SYN_SENT -->
+  <path d="M 490 130 Q 590 160 690 180" class="arrow"/>
+  <text x="600" y="150" class="label" font-size="11">connect()</text>
+  
+  <!-- LISTEN to SYN_RCVD -->
+  <path d="M 210 240 L 210 320" class="arrow"/>
+  <text x="230" y="280" class="label" font-size="11">SYN</text>
+  
+  <!-- SYN_SENT to ESTABLISHED -->
+  <path d="M 740 240 Q 600 280 540 320" class="arrow"/>
+  <text x="670" y="280" class="label" font-size="11">SYN+ACK</text>
+  
+  <!-- SYN_RCVD to ESTABLISHED -->
+  <path d="M 270 350 L 400 350" class="arrow"/>
+  <text x="320" y="340" class="label" font-size="11">ACK</text>
+  
+  <!-- ESTABLISHED to FIN_WAIT_1 -->
+  <path d="M 430 380 Q 300 420 160 460" class="arrow"/>
+  <text x="280" y="410" class="label" font-size="11">close()</text>
+  
+  <!-- ESTABLISHED to CLOSE_WAIT -->
+  <path d="M 450 380 L 340 460" class="arrow"/>
+  <text x="380" y="410" class="label" font-size="11">FIN</text>
+  
+  <!-- FIN_WAIT_1 to FIN_WAIT_2 -->
+  <path d="M 220 490 L 460 490" class="arrow"/>
+  <text x="340" y="480" class="label" font-size="11">ACK</text>
+  
+  <!-- CLOSE_WAIT to LAST_ACK -->
+  <path d="M 400 490 L 640 490" class="arrow"/>
+  <text x="520" y="480" class="label" font-size="11">close()</text>
+  
+  <!-- FIN_WAIT_2 to TIME_WAIT -->
+  <path d="M 520 520 Q 420 540 340 560" class="arrow"/>
+  <text x="450" y="540" class="label" font-size="11">FIN</text>
+  
+  <!-- LAST_ACK to CLOSED -->
+  <path d="M 700 520 Q 700 550 750 590" class="arrow"/>
+  <path d="M 750 590 Q 450 650 450 130" class="arrow" stroke-dasharray="5,5"/>
+  <text x="720" y="570" class="label" font-size="11">ACK</text>
+  
+  <!-- TIME_WAIT to CLOSED -->
+  <path d="M 340 620 Q 340 680 450 130" class="arrow" stroke-dasharray="5,5"/>
+  <text x="300" y="670" class="label" font-size="11">Timeout</text>
+
+</svg>

@@ -1,0 +1,65 @@
+<svg width="800" height="300" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    body { background-color: #ffffff; }
+    .bg { fill: #ffffff; }
+    text { fill: #333; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+    .label { font-size: 12px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .subtitle { font-size: 13px; font-weight: 600; }
+    .box { fill: #ffffff; stroke: #ddd; stroke-width: 2; rx: 8; }
+    .header-cell { fill: #ffffff; stroke: #ddd; stroke-width: 1; }
+    .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    .dashed { stroke-dasharray: 5,5; }
+    .lost { stroke: #ff0000; stroke-width: 3; }
+    .line { stroke: #333; stroke-width: 1; }
+    .timeline { stroke: #333; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+  <rect class="bg" width="800" height="300"/>
+
+  <text x="400" y="30" text-anchor="middle" class="title">ECN (Explicit Congestion Notification)</text>
+  
+  <!-- Host A -->
+  <rect x="50" y="80" width="100" height="60" class="box"/>
+  <text x="100" y="115" text-anchor="middle" class="subtitle">호스트 A</text>
+  
+  <!-- Packet arrow to router -->
+  <path d="M 150 110 L 220 110" class="arrow"/>
+  <text x="185" y="105" text-anchor="middle" class="label">패킷</text>
+  
+  <!-- Router -->
+  <rect x="220" y="80" width="120" height="60" class="box"/>
+  <text x="280" y="105" text-anchor="middle" class="label">라우터</text>
+  <text x="280" y="120" text-anchor="middle" class="label" font-size="12">(혼잡 감지)</text>
+  
+  <!-- Packet arrow to Host B (ECN marked) -->
+  <path d="M 340 110 L 410 110" class="arrow"/>
+  <text x="375" y="105" text-anchor="middle" class="label">패킷</text>
+  <text x="375" y="120" text-anchor="middle" class="label" font-size="11">(ECN=11)</text>
+  
+  <!-- Host B -->
+  <rect x="410" y="80" width="100" height="60" class="box"/>
+  <text x="460" y="115" text-anchor="middle" class="subtitle">호스트 B</text>
+  
+  <!-- ECE bit back -->
+  <path d="M 410 140 L 340 140" class="arrow"/>
+  <text x="375" y="155" text-anchor="middle" class="label">ECE 비트</text>
+  
+  <!-- CWR back -->
+  <path d="M 220 140 L 150 140" class="arrow"/>
+  <text x="185" y="155" text-anchor="middle" class="label">CWR</text>
+  
+  <!-- Back to Host A -->
+  <path d="M 150 140 L 100 140" class="arrow"/>
+  
+  <!-- Explanation -->
+  <rect x="50" y="200" width="700" height="70" class="box"/>
+  <text x="400" y="225" text-anchor="middle" class="label" font-weight="600">동작 원리</text>
+  <text x="70" y="250" class="label">1. 라우터가 혼잡을 감지하면 패킷에 ECN 표시</text>
+  <text x="70" y="270" class="label">2. 수신자가 ECE 비트로 송신자에게 알림 3. 송신자가 CWR로 응답하고 cwnd 감소</text>
+
+</svg>

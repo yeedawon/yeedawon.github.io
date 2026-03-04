@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 20px; font-weight: bold; fill: #333; }
+      .subtitle { font-size: 14px; fill: #333; font-weight: 600; }
+      .text { font-size: 13px; fill: #333; }
+      .small { font-size: 11px; fill: #999; }
+      .label { font-size: 12px; fill: #666; font-weight: 500; }
+      .code { font-size: 12px; font-family: "Courier New", monospace; fill: #d73a49; }
+      .arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-thick { fill: none; stroke: #333; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .arrow-dashed { fill: none; stroke: #333; stroke-width: 2; stroke-dasharray: 5,5; marker-end: url(#arrowhead); }
+      .box { fill: #fff; stroke: #ddd; stroke-width: 1.5; }
+      .box-highlight { fill: #e8f4f8; stroke: #ddd; stroke-width: 1.5; }
+      .box-response { fill: #f0f5e8; stroke: #ddd; stroke-width: 1.5; }
+      .box-uri { fill: #fff3e0; stroke: #ddd; stroke-width: 1.5; }
+      .box-dns { fill: #f3e5f5; stroke: #ddd; stroke-width: 1.5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+<text x="400" y="35" text-anchor="middle" class="title">URL 구조 분석</text><rect x="30" y="70" width="740" height="60" rx="8" class="box" /><text x="50" y="105" text-anchor="start" class="code">https://api.example.com:8080/articles?category=spring&page=1#section2</text><rect x="40" y="160" width="200" height="50" rx="8" class="box" /><text x="50" y="180" text-anchor="start" class="code">https</text><text x="50" y="200" text-anchor="start" class="small">스킴 (Scheme) - 프로토콜</text><rect x="190" y="160" width="200" height="50" rx="8" class="box" /><text x="200" y="180" text-anchor="start" class="code">api.example.com</text><text x="200" y="200" text-anchor="start" class="small">권한 (Authority) - 호스트명</text><rect x="510" y="160" width="200" height="50" rx="8" class="box" /><text x="520" y="180" text-anchor="start" class="code">8080</text><text x="520" y="200" text-anchor="start" class="small">포트 (Port)</text><rect x="40" y="240" width="200" height="50" rx="8" class="box" /><text x="50" y="260" text-anchor="start" class="code">/articles</text><text x="50" y="280" text-anchor="start" class="small">경로 (Path) - 자원의 경로</text><rect x="40" y="320" width="200" height="50" rx="8" class="box" /><text x="50" y="340" text-anchor="start" class="code">category=spring&page=1</text><text x="50" y="360" text-anchor="start" class="small">쿼리 스트링 (Query String) - 파라미터</text><rect x="40" y="400" width="200" height="50" rx="8" class="box" /><text x="50" y="420" text-anchor="start" class="code">section2</text><text x="50" y="440" text-anchor="start" class="small">프래그먼트 (Fragment) - 앵커</text><text x="400" y="500" text-anchor="middle" class="subtitle">기억하기</text><text x="400" y="525" text-anchor="middle" class="code">scheme://host:port/path?query#fragment</text></svg>

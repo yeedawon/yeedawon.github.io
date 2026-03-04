@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 20px; font-weight: bold; fill: #333; }
+      .subtitle { font-size: 14px; fill: #333; font-weight: 600; }
+      .text { font-size: 13px; fill: #333; }
+      .small { font-size: 11px; fill: #999; }
+      .label { font-size: 12px; fill: #666; font-weight: 500; }
+      .code { font-size: 12px; font-family: "Courier New", monospace; fill: #d73a49; }
+      .arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-thick { fill: none; stroke: #333; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .arrow-dashed { fill: none; stroke: #333; stroke-width: 2; stroke-dasharray: 5,5; marker-end: url(#arrowhead); }
+      .box { fill: #fff; stroke: #ddd; stroke-width: 1.5; }
+      .box-highlight { fill: #e8f4f8; stroke: #ddd; stroke-width: 1.5; }
+      .box-response { fill: #f0f5e8; stroke: #ddd; stroke-width: 1.5; }
+      .box-uri { fill: #fff3e0; stroke: #ddd; stroke-width: 1.5; }
+      .box-dns { fill: #f3e5f5; stroke: #ddd; stroke-width: 1.5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+<text x="400" y="35" text-anchor="middle" class="title">HTTP 연결 비교</text><text x="200" y="70" text-anchor="middle" class="subtitle">HTTP/1.0 - 비지속 연결</text><rect x="50" y="90" width="300" height="50" rx="8" class="box" /><text x="70" y="120" text-anchor="start" class="text">TCP 연결 1</text><text x="70" y="135" text-anchor="start" class="small">요청 → 응답 → 종료</text><rect x="50" y="160" width="300" height="50" rx="8" class="box" /><text x="70" y="190" text-anchor="start" class="text">TCP 연결 2</text><text x="70" y="205" text-anchor="start" class="small">요청 → 응답 → 종료</text><rect x="50" y="230" width="300" height="50" rx="8" class="box" /><text x="70" y="260" text-anchor="start" class="text">TCP 연결 3</text><text x="70" y="275" text-anchor="start" class="small">요청 → 응답 → 종료</text><text x="200" y="330" text-anchor="middle" class="label">높은 오버헤드</text><text x="200" y="345" text-anchor="middle" class="small">매 요청마다 연결/종료</text><text x="600" y="70" text-anchor="middle" class="subtitle">HTTP/1.1 - 지속 연결</text><rect x="450" y="90" width="300" height="50" rx="8" class="box" /><text x="470" y="120" text-anchor="start" class="text">TCP 연결 1</text><text x="470" y="135" text-anchor="start" class="small">연결 수립</text><rect x="450" y="160" width="300" height="50" rx="8" class="box" /><text x="470" y="185" text-anchor="start" class="text">요청 1 → 응답 1</text><text x="470" y="200" text-anchor="start" class="text">요청 2 → 응답 2</text><rect x="450" y="230" width="300" height="50" rx="8" class="box" /><text x="470" y="260" text-anchor="start" class="text">TCP 연결 종료</text><text x="600" y="330" text-anchor="middle" class="label">낮은 오버헤드</text><text x="600" y="345" text-anchor="middle" class="small">한 연결로 여러 요청 처리</text></svg>

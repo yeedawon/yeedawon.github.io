@@ -17,7 +17,7 @@ excerpt: "사용자와 가장 가까운 응용 계층. HTTP 요청/응답 구조
 
 ## 응용 계층이란?
 
-TCP/IP 4계층 중 사용자와 **직접 맞닿은 최상위 계층**입니다.  
+TCP/IP 4계층 중 사용자와 **직접 맞닿은 최상위 계층**입니다.
 HTTP, DNS, FTP, SSH 등 실제로 눈에 보이는 서비스가 모두 여기에 속합니다.
 
 **주요 응용 계층 프로토콜**
@@ -40,12 +40,12 @@ HTTP, DNS, FTP, SSH 등 실제로 눈에 보이는 서비스가 모두 여기에
 
 **① 요청-응답 기반**
 
-클라이언트가 요청을 보내면 서버가 응답합니다. 서버가 먼저 보낼 수 없습니다.  
+클라이언트가 요청을 보내면 서버가 응답합니다. 서버가 먼저 보낼 수 없습니다.
 (단, WebSocket은 양방향 통신 가능)
 
 **② 미디어 독립적 (Media-Independent)**
 
-자원의 형태와 무관하게 동일한 인터페이스로 주고받습니다.  
+자원의 형태와 무관하게 동일한 인터페이스로 주고받습니다.
 자원 형태는 `Content-Type` 헤더로 알립니다.
 
 | Content-Type | 의미 |
@@ -69,19 +69,7 @@ HTTP, DNS, FTP, SSH 등 실제로 눈에 보이는 서비스가 모두 여기에
 
 HTTP/1.1부터 기본값입니다. 하나의 TCP 연결로 여러 요청·응답을 처리합니다.
 
-<div class="diagram">  [ HTTP/1.0 - 비지속 연결 ]           [ HTTP/1.1 - 지속 연결 ]
-
-  TCP 연결 수립 (3-way handshake)     TCP 연결 수립 (3-way handshake)
-       ↓                                     ↓
-  요청 1 → 응답 1                       요청 1 → 응답 1
-       ↓                                     ↓
-  TCP 연결 종료 (4-way handshake)       요청 2 → 응답 2
-       ↓                                     ↓
-  TCP 연결 수립 (다시!)                  요청 3 → 응답 3
-       ↓                                     ↓
-  요청 2 → 응답 2                       TCP 연결 종료
-       ↓
-  (반복 → 오버헤드 큼)</div>
+<img src="/assets/images/network/post3-http-dns-uri/http-persistent.svg" alt="HTTP 지속 연결 비교" style="max-width: 100%;">
 
 ---
 
@@ -89,21 +77,7 @@ HTTP/1.1부터 기본값입니다. 하나의 TCP 연결로 여러 요청·응답
 
 ### 요청 메시지 (Request)
 
-<div class="diagram">  ┌──────────────────────────────────────────────────┐
-  │  Start Line  →  Request Line                      │
-  │  GET   /api/articles?category=spring   HTTP/1.1   │
-  │  ↑메서드   ↑Request Target                          │
-  ├──────────────────────────────────────────────────┤
-  │  Field Lines (헤더, 0개 이상)                       │
-  │  Host: api.example.com                            │
-  │  Accept: application/json                         │
-  │  Authorization: Bearer eyJhbGci...                │
-  ├──────────────────────────────────────────────────┤
-  │  (빈 줄)                                           │
-  ├──────────────────────────────────────────────────┤
-  │  Message Body (선택적)                              │
-  │  { "title": "Spring Boot 시작" }  ← POST 시 포함   │
-  └──────────────────────────────────────────────────┘</div>
+<img src="/assets/images/network/post3-http-dns-uri/http-request.svg" alt="HTTP 요청 메시지 구조" style="max-width: 100%;">
 
 ### HTTP 메서드
 
@@ -119,20 +93,7 @@ HTTP/1.1부터 기본값입니다. 하나의 TCP 연결로 여러 요청·응답
 
 ### 응답 메시지 (Response)
 
-<div class="diagram">  ┌──────────────────────────────────────────────────┐
-  │  Start Line  →  Status Line                       │
-  │  HTTP/1.1   201   Created                         │
-  │              ↑상태코드  ↑이유 구문                    │
-  ├──────────────────────────────────────────────────┤
-  │  Field Lines (헤더)                                │
-  │  Content-Type: application/json                   │
-  │  Location: /api/articles/42                       │
-  ├──────────────────────────────────────────────────┤
-  │  (빈 줄)                                           │
-  ├──────────────────────────────────────────────────┤
-  │  Message Body                                     │
-  │  { "id": 42, "title": "Spring Boot 시작" }        │
-  └──────────────────────────────────────────────────┘</div>
+<img src="/assets/images/network/post3-http-dns-uri/http-response.svg" alt="HTTP 응답 메시지 구조" style="max-width: 100%;">
 
 ### HTTP 상태 코드
 
@@ -162,27 +123,11 @@ HTTP/1.1부터 기본값입니다. 하나의 TCP 연결로 여러 요청·응답
 
 ## URI, URL, URN
 
-<div class="diagram">  URI (Uniform Resource Identifier)
-  ┌─────────────────────────────────────────┐
-  │  자원을 식별할 수 있는 모든 정보             │
-  │                                          │
-  │  ┌──────────────────────────────────┐   │
-  │  │  URL (Locator) — 위치로 식별       │   │
-  │  │  https://api.example.com/articles │   │
-  │  └──────────────────────────────────┘   │
-  │                                          │
-  │  ┌──────────────────────────────────┐   │
-  │  │  URN (Name) — 이름으로 식별        │   │
-  │  │  urn:isbn:979-11-91905-27-4       │   │
-  │  └──────────────────────────────────┘   │
-  └─────────────────────────────────────────┘</div>
+<img src="/assets/images/network/post3-http-dns-uri/uri-url-urn.svg" alt="URI, URL, URN 관계" style="max-width: 100%;">
 
 ### URL 구조 분해
 
-<div class="diagram">  https://api.example.com:8080/articles?category=spring&page=1#section2
-  ─────   ───────────────  ────  ────────  ────────────────────  ────────
-  scheme     authority     port    path         query string      fragment
-   (프로토콜)  (호스트명)    (포트)  (경로)    (key=value 파라미터)   (앵커)</div>
+<img src="/assets/images/network/post3-http-dns-uri/url-structure.svg" alt="URL 구조" style="max-width: 100%;">
 
 | 구성 요소 | 예시 | 설명 |
 |---------|------|------|
@@ -201,12 +146,7 @@ IP 주소만으로 서버를 기억하기 어려워서, **도메인 이름 → I
 
 ### DNS 도메인 계층 구조
 
-<div class="diagram">  www    .    example    .    com    .
-   ↑            ↑             ↑        ↑
-   │            │             │        └── 루트 도메인 (보통 생략)
-   │            │             └────────── TLD (Top Level Domain)
-   │            └──────────────────────── 2단계 도메인
-   └───────────────────────────────────── 서브 도메인</div>
+<img src="/assets/images/network/post3-http-dns-uri/dns-hierarchy.svg" alt="DNS 계층 구조" style="max-width: 100%;">
 
 **주요 TLD 종류**
 
@@ -220,22 +160,7 @@ IP 주소만으로 서버를 기억하기 어려워서, **도메인 이름 → I
 
 ### DNS 질의 흐름 (재귀적 조회)
 
-<div class="diagram">  [클라이언트]         [로컬 네임서버]     [루트 네임서버]  [TLD 네임서버]  [책임 네임서버]
-       │                     │                   │               │               │
-  ① "www.example.com         │                   │               │               │
-     IP 주소 알려줘" ────────→│                   │               │               │
-       │                     │ ② "모르니까        │               │               │
-       │                     │    루트에 물어봄"  │               │               │
-       │                     │──────────────────→│               │               │
-       │                     │ ③ ".com 담당은     │               │               │
-       │                     │    여기야" ←───────│               │               │
-       │                     │──────────────────────────────────→│               │
-       │                     │ ④ "example.com 담당│               │               │
-       │                     │    은 여기야" ←─────────────────── │               │
-       │                     │──────────────────────────────────────────────────→│
-       │                     │ ⑤ "93.184.216.34" ←──────────────────────────────│
-       │ ⑥ "93.184.216.34" ←─│
-       │    (캐시 저장)        │</div>
+<img src="/assets/images/network/post3-http-dns-uri/dns-query.svg" alt="DNS 질의 흐름" style="max-width: 100%;">
 
 **DNS 캐시와 TTL**
 
@@ -260,7 +185,7 @@ IP 주소만으로 서버를 기억하기 어려워서, **도메인 이름 → I
 
 ## ICMP (Internet Control Message Protocol)
 
-IP 패킷 전달 과정의 **오류 메시지와 진단 정보**를 전달합니다.  
+IP 패킷 전달 과정의 **오류 메시지와 진단 정보**를 전달합니다.
 데이터 전송용이 아닌 네트워크 상태 확인용 보조 프로토콜입니다.
 
 | ICMP 메시지 타입 | 의미 | 활용 도구 |

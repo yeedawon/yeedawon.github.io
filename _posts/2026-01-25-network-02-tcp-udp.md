@@ -17,18 +17,10 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ## 전송 계층의 역할
 
-네트워크 계층(IP)이 **호스트 간** 통신을 담당한다면,  
+네트워크 계층(IP)이 **호스트 간** 통신을 담당한다면,
 전송 계층은 **호스트 내 특정 애플리케이션 프로세스**까지 데이터를 전달합니다.
 
-<div class="diagram">  [ 호스트 A ]                              [ 호스트 B ]
-  ┌─────────────────────┐                ┌─────────────────────┐
-  │  Chrome   :52341    │                │  nginx    :80       │
-  │  카카오톡  :52342    │     TCP/UDP     │  Spring   :8080     │
-  │  VS Code  :52343    │  ←──────────→  │  MySQL    :3306     │
-  └─────────────────────┘                └─────────────────────┘
-          IP 192.168.1.5                         IP 192.168.1.10
-                   네트워크 계층 → 호스트 식별 (IP)
-                   전송 계층    → 프로세스 식별 (Port)</div>
+<img src="/assets/images/network/post2-tcp-udp/1-host-port.svg" alt="호스트와 포트 구조" style="max-width: 100%;">
 
 ---
 
@@ -71,18 +63,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ## TCP 세그먼트 헤더
 
-<div class="diagram">  ┌──────────────────────┬──────────────────────┐
-  │    송신지 포트 (16 bit) │    수신지 포트 (16 bit) │
-  ├──────────────────────┴──────────────────────┤
-  │            순서 번호 (Sequence Number, 32 bit) │
-  ├─────────────────────────────────────────────┤
-  │       확인 응답 번호 (Acknowledgement Number)  │
-  ├───────┬──────┬──────────────┬───────────────┤
-  │데이터  │예 약  │  제어 비트    │  수신 윈도우   │
-  │오프셋  │      │ SYN ACK FIN  │   (rwnd)      │
-  ├───────┴──────┴──────────────┴───────────────┤
-  │        체크섬          │     긴급 포인터        │
-  └─────────────────────────────────────────────┘</div>
+<img src="/assets/images/network/post2-tcp-udp/2-tcp-header.svg" alt="TCP 세그먼트 헤더 구조" style="max-width: 100%;">
 
 **주요 제어 비트(플래그)**
 
@@ -98,45 +79,13 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ## 연결 수립 — 3-way Handshake
 
-<div class="diagram">  호스트 A (클라이언트)              호스트 B (서버)
-  [CLOSED]                           [LISTEN]
-      │                                  │
-      │  ①  SYN  (seq=100)               │
-      │ ─────────────────────────────→   │  "연결 시작합니다. 내 시작 번호는 100"
-      │                              [SYN_RCVD]
-      │                                  │
-      │  ②  SYN + ACK  (seq=200, ack=101)│
-      │ ←─────────────────────────────   │  "OK! 내 번호는 200, 네 101번 받았어"
-  [SYN_SENT]                             │
-      │                                  │
-      │  ③  ACK  (ack=201)               │
-      │ ─────────────────────────────→   │  "확인. 네 201번 기다릴게"
-  [ESTABLISHED]                    [ESTABLISHED]
-      │                                  │
-      │        데이터 송수신 시작           │</div>
+<img src="/assets/images/network/post2-tcp-udp/3-handshake-3way.svg" alt="3-way Handshake" style="max-width: 100%;">
 
 ---
 
 ## 연결 종료 — 4-way Handshake
 
-<div class="diagram">  호스트 A (active close)           호스트 B (passive close)
-  [ESTABLISHED]                      [ESTABLISHED]
-      │                                  │
-      │  ①  FIN                          │
-      │ ─────────────────────────────→   │  "저 연결 끊을게요"
-      │                              [CLOSE_WAIT]
-      │  ②  ACK                          │
-      │ ←─────────────────────────────   │  "알겠어요"
-  [FIN_WAIT_2]                           │  (남은 데이터 전송 후...)
-      │                                  │
-      │  ③  FIN                          │
-      │ ←─────────────────────────────   │  "저도 끊을게요"
-      │                              [LAST_ACK]
-      │  ④  ACK                          │
-      │ ─────────────────────────────→   │
-  [TIME_WAIT]                       [CLOSED]
-      │  (일정 시간 대기 후)               │
-  [CLOSED]</div>
+<img src="/assets/images/network/post2-tcp-udp/4-handshake-4way.svg" alt="4-way Handshake" style="max-width: 100%;">
 
 > **TIME_WAIT**: A가 보낸 마지막 ACK가 유실되었을 때 B의 FIN 재전송을 받을 수 있도록 잠시 대기합니다.
 
@@ -148,11 +97,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ### Stop-and-Wait ARQ
 
-<div class="diagram">  송신자          수신자
-     │ ─── seg1 ──→ │   ACK 받기 전 다음 세그먼트 전송 불가
-     │ ←── ACK1 ─── │
-     │ ─── seg2 ──→ │
-     │ ←── ACK2 ─── │   ← 효율 낮음, 한 번에 하나씩</div>
+<img src="/assets/images/network/post2-tcp-udp/5-arq-stop-wait.svg" alt="Stop-and-Wait ARQ" style="max-width: 100%;">
 
 | 장점 | 단점 |
 |------|------|
@@ -160,11 +105,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ### Go-Back-N ARQ (파이프라이닝)
 
-<div class="diagram">  송신자                        수신자
-     │ ─── [1][2][3][4][5] ───→ │   여러 세그먼트 연속 전송
-     │                           │   ← 3번 손실!
-     │ ←── NACK 3 ──────────── │
-     │ ─── [3][4][5] ─────────→ │   오류 발생 지점부터 전부 재전송</div>
+<img src="/assets/images/network/post2-tcp-udp/6-arq-gobackn.svg" alt="Go-Back-N ARQ" style="max-width: 100%;">
 
 | 장점 | 단점 |
 |------|------|
@@ -172,11 +113,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ### Selective Repeat ARQ
 
-<div class="diagram">  송신자                        수신자
-     │ ─── [1][2][3][4][5] ───→ │
-     │                           │   ← 3번만 손실!
-     │ ←── NACK 3 ──────────── │
-     │ ─── [3] ───────────────→ │   오류 난 세그먼트만 재전송</div>
+<img src="/assets/images/network/post2-tcp-udp/7-arq-selective.svg" alt="Selective Repeat ARQ" style="max-width: 100%;">
 
 | 장점 | 단점 |
 |------|------|
@@ -186,16 +123,10 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ## 흐름 제어 — 슬라이딩 윈도우
 
-수신자가 처리할 수 있는 데이터량을 **수신 윈도우(rwnd)** 로 알려주면,  
+수신자가 처리할 수 있는 데이터량을 **수신 윈도우(rwnd)** 로 알려주면,
 송신자는 ACK 없이 그 크기만큼 연속으로 보낼 수 있습니다.
 
-<div class="diagram">  윈도우 크기 = 4인 경우:
-
-  송신자                              수신자
-     │ ─── [1][2][3][4] ──────────→ │   ACK 없이 4개 한꺼번에 전송
-     │ ←── ACK 3 (rwnd=4) ──────── │   1,2,3 수신 확인 + 다음 윈도우 크기 전달
-     │ ─── [4][5][6][7] ──────────→ │   윈도우 슬라이드 (4는 재전송 포함)
-     │ ←── ACK 7 (rwnd=2) ──────── │   윈도우 축소 (수신자 버퍼 부족)</div>
+<img src="/assets/images/network/post2-tcp-udp/8-sliding-window.svg" alt="슬라이딩 윈도우" style="max-width: 100%;">
 
 수신자 버퍼가 가득 찰수록 `rwnd` 값이 줄어들고, 비면 다시 늘어납니다.
 
@@ -214,18 +145,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ### 슬로 스타트 + AIMD 흐름
 
-<div class="diagram">  혼잡 윈도우
-  크기(cwnd)
-      │
-   32 │                    ╭──────────────
-   16 │              ╭─────╯
-    8 │          ╭───╯
-    4 │        ╭─╯         ← 임계점(ssthresh) 도달 후 선형 증가
-    2 │      ╭─╯
-    1 │─────╯              ← 슬로 스타트: RTT마다 2배 증가 (지수 증가)
-      └──────────────────────────────────→ 시간(RTT)
-        S S S S S A A A A A A A A A A ...
-        (슬로스타트)  (AIMD: 선형 증가)     (혼잡 발생 시 급감)</div>
+<img src="/assets/images/network/post2-tcp-udp/9-slow-start.svg" alt="슬로 스타트 + AIMD" style="max-width: 100%;">
 
 **혼잡 제어 상태 전환 요약**
 
@@ -238,12 +158,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ### ECN (Explicit Congestion Notification)
 
-<div class="diagram">  호스트A ───패킷──→ 라우터 (혼잡 감지!)
-                          │ ECN 비트 = 11 설정
-                          ↓
-         호스트A ←── 패킷 ── 호스트B: ECN 확인 → TCP ECE 비트로 알림
-                               ↓
-                 호스트A → CWR 비트 설정 → 혼잡 윈도우 줄임</div>
+<img src="/assets/images/network/post2-tcp-udp/10-ecn.svg" alt="ECN 흐름" style="max-width: 100%;">
 
 타임아웃 발생 전에 혼잡을 미리 감지해 사전 대응이 가능합니다.
 
@@ -251,22 +166,7 @@ excerpt: "포트 번호로 프로세스를 구분하고, TCP의 신뢰성 보장
 
 ## TCP 상태 다이어그램 요약
 
-<div class="diagram">  ┌─────────┐     패시브 오픈     ┌─────────┐
-  │ CLOSED  │ ─────────────────→ │ LISTEN  │
-  └─────────┘                    └────┬────┘
-       │ 액티브 오픈                    │ SYN 수신
-       ↓                              ↓
-  ┌──────────┐    SYN+ACK 수신   ┌──────────────┐
-  │ SYN_SENT │ ←──────────────── │ SYN_RECEIVED │
-  └────┬─────┘                   └──────┬───────┘
-       │ ACK 전송                        │ ACK 수신
-       ↓                                ↓
-  ┌─────────────────────────────────────────┐
-  │               ESTABLISHED               │
-  └───────────────┬─────────────────────────┘
-                  │ FIN 전송
-                  ↓
-  TIME_WAIT → CLOSED (일정 시간 후)</div>
+<img src="/assets/images/network/post2-tcp-udp/11-tcp-state.svg" alt="TCP 상태 다이어그램" style="max-width: 100%;">
 
 ---
 
