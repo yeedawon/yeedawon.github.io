@@ -27,28 +27,8 @@ div class="callout callout-info">
 | 강의 ① | [youtu.be/c_4x5M_GwD8](https://youtu.be/c_4x5M_GwD8?si=Mh525VtBjlHnpTYI){:target="_blank"} |
 | 강의 ② | [youtu.be/k7G1wXTB8Fk](https://youtu.be/k7G1wXTB8Fk?si=UhoHYeayG7C_xnFK){:target="_blank"} |
 | 원본 노트 | 수기 복습 노트 — <a href="/assets/files/network.pdf" download>PDF 다운로드</a> |
-| 정리 도구 | 생성형 AI (Claude) — 표·다이어그램 구조화, 내용 요약 |
 
-## 시리즈 구성
-
-| # | 포스트 | 핵심 주제 |
-|---|--------|---------|
-| 1 | [네트워크 계층 — IP 주소, 서브네팅, 라우팅, NAT, DHCP](/network/2026/01/22/network-01-ip-routing-nat/) | IPv4, CIDR, 공인/사설 IP, NAT, ARP, DHCP |
-| 2 | [전송 계층 — TCP, UDP, 3-way Handshake, 흐름·혼잡 제어](/network/2026/01/25/network-02-tcp-udp/) | 포트, TCP vs UDP, Handshake, ARQ, 슬라이딩 윈도우, 혼잡 제어 |
-| 3 | [응용 계층 — HTTP, DNS, URI](/network/2026/01/28/network-03-http-dns-uri/) | HTTP 메시지, 상태 코드, DNS 조회, URI/URL 구조 |
-
-## AI 활용 방식
-
-이 시리즈에서 생성형 AI는 다음과 같은 역할로 활용되었습니다.
-
-| 역할 | 설명 |
-|------|------|
-| 구조화 | 손필기 노트의 흐름을 계층별 포스트로 분리·재배치 |
-| 표 변환 | 텍스트 나열 형태의 비교 항목을 마크다운 표로 정리 |
-| 다이어그램 생성 | 노트 속 손그림을 SVG 다이어그램으로 재작성 |
-| AWS 연결 | 각 개념이 AWS 환경에서 어떻게 적용되는지 매핑 |
-
-원본 노트의 학습 내용을 충실히 반영하되, AI의 구조화 능력을 활용해 가독성과 참조 편의성을 높이는 데 초점을 두었습니다.
+## 이 블로그에 게시된 네트워크 관련 게시글은 **원본 노트를 기반**으로 하여 **생성형 AI**를 통해 제작되었습니다. 
 
 ---
 
