@@ -1,34 +1,88 @@
 ---
 layout: default
 ---
-{% assign posts_by_year = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
-{% for yg in posts_by_year %}
-<div class="year-block">
-  <div class="year-header">
-    <span class="year-label">{{ yg.name }}</span>
-    <span class="year-count">{{ yg.items | size }}</span>
-  </div>
-  <ul class="post-list">
-    {% for post in yg.items %}
-    <li class="post-row">
-      <a class="title-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      <div class="meta">
-        <span>{{ post.date | date: "%b %d" }}</span>
-        {% if post.categories[0] == "springboot" %}
-          <span class="badge badge-sb">Spring Boot</span>
-        {% elsif post.categories[0] == "network" %}
-          <span class="badge badge-net">Network</span>
-        {% else %}
-          <span class="badge badge-etc">{{ post.categories[0] }}</span>
-        {% endif %}
-        <span>·</span>
-        <span>{{ post.content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
+<div class="home-layout">
+
+  <!-- ── LEFT: PROFILE SIDEBAR ── -->
+  <aside class="profile-sidebar">
+    <div class="profile-avatar">YD</div>
+    <div class="profile-name">{{ site.author.name }}</div>
+    <div class="profile-handle">@{{ site.author.github }}</div>
+    <p class="profile-bio">{{ site.author.description }}</p>
+
+    <ul class="profile-meta">
+      <li>
+        <span class="meta-icon">🎓</span>
+        <span>{{ site.author.university }}<br>{{ site.author.major }}</span>
+      </li>
+      <li>
+        <span class="meta-icon">☁️</span>
+        <span>{{ site.author.club }}</span>
+      </li>
+    </ul>
+
+    <div class="profile-links">
+      <a href="https://github.com/{{ site.author.github }}" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.807 1.305 3.492.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        github.com/{{ site.author.github }}
+      </a>
+    </div>
+
+    <div class="profile-badge">☁ AWS Cloud Club</div>
+
+    <!-- Post stats -->
+    <div style="margin-top:1.4rem; padding-top:1.1rem; border-top:1px solid var(--faint);">
+      {% assign sb_posts  = site.posts | where: "categories", "springboot" %}
+      {% assign net_posts = site.posts | where: "categories", "network" %}
+      <div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.08em;text-transform:uppercase;">Posts</div>
+      <div style="font-size:.78rem;color:#555;">
+        <div style="display:flex;justify-content:space-between;padding:.22rem 0;border-bottom:1px solid var(--faint);">
+          <span><span class="badge badge-sb" style="font-size:.58rem;">SB</span> Spring Boot</span>
+          <span style="font-family:var(--mono);font-weight:700;">{{ sb_posts | size }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:.22rem 0;border-bottom:1px solid var(--faint);">
+          <span><span class="badge badge-net" style="font-size:.58rem;">NET</span> Network</span>
+          <span style="font-family:var(--mono);font-weight:700;">{{ net_posts | size }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:.22rem 0;color:var(--muted);">
+          <span>Total</span>
+          <span style="font-family:var(--mono);font-weight:700;">{{ site.posts | size }}</span>
+        </div>
       </div>
-      {% if post.excerpt %}
-      <p class="excerpt">{{ post.excerpt | strip_html | truncate: 130 }}</p>
-      {% endif %}
-    </li>
+    </div>
+  </aside>
+
+  <!-- ── RIGHT: POST LIST ── -->
+  <div class="post-feed">
+    {% assign posts_by_year = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
+    {% for yg in posts_by_year %}
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-label">{{ yg.name }}</span>
+        <span class="year-count">{{ yg.items | size }}</span>
+      </div>
+      <ul class="post-list">
+        {% for post in yg.items %}
+        <li class="post-row">
+          <a class="title-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <div class="meta">
+            <span>{{ post.date | date: "%b %d" }}</span>
+            {% if post.categories[0] == "springboot" %}
+              <span class="badge badge-sb">Spring Boot</span>
+            {% elsif post.categories[0] == "network" %}
+              <span class="badge badge-net">Network</span>
+            {% else %}
+              <span class="badge badge-etc">{{ post.categories[0] }}</span>
+            {% endif %}
+          </div>
+          {% if post.excerpt %}
+          <p class="excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
     {% endfor %}
-  </ul>
+  </div>
+
 </div>
-{% endfor %}

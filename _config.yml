@@ -1,10 +1,16 @@
 title: "DAWON's BLOG"
-tagline: "AI/ML"
+tagline: "AI / ML"
 description: "wanna be a AI/ML Engineer"
 url: "https://yeedawon.github.io"
 baseurl: ""
+
 author:
   name: yeedawon
+  fullname: 이다원
+  description: "wanna be a AI/ML Engineer"
+  university: "건국대학교"
+  major: "컴퓨터공학부 전환 중"
+  club: "AWS Cloud Club at Konkuk"
   github: yeedawon
 
 permalink: /:categories/:year/:month/:day/:title/
@@ -31,3 +37,4 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - "*.zip"

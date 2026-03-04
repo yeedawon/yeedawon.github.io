@@ -1,269 +1,307 @@
 ---
 layout: post
-title: "[Network] 응용 계층 — HTTP, DNS, URI/URL"
+title: "[Network] 응용 계층 — HTTP, DNS, URI"
 date: 2026-01-28
 categories: [network]
-tags: [network, http, dns, uri, url, rest, aws]
+tags: [network, http, dns, uri, rest, aws]
 author: yeedawon
-excerpt: "사용자와 가장 밀접한 응용 계층의 핵심 프로토콜인 HTTP와 DNS를 정리합니다. Spring Boot REST API와 AWS에서 직접 활용되는 개념들입니다."
+excerpt: "사용자와 가장 가까운 응용 계층. HTTP 요청/응답 구조, 상태 코드, DNS 조회 흐름, URI 구조를 표와 다이어그램으로 정리합니다."
 ---
 
 <div class="callout callout-src">
   <div class="callout-title">📚 참조</div>
-  ① 혼자 공부하는 네트워크 복습 노트 (응용 계층)<br>
-  ② 강의 1편: <a href="https://youtu.be/c_4x5M_GwD8?si=Mh525VtBjlHnpTYI" target="_blank">youtu.be/c_4x5M_GwD8</a><br>
+  ① 혼자 공부하는 네트워크 복습 노트<br>
+  ② 강의 1편: <a href="https://youtu.be/c_4x5M_GwD8?si=Mh525VtBjlHnpTYI" target="_blank">youtu.be/c_4x5M_GwD8</a> &nbsp;
   ③ 강의 2편: <a href="https://youtu.be/k7G1wXTB8Fk?si=UhoHYeayG7C_xnFK" target="_blank">youtu.be/k7G1wXTB8Fk</a>
 </div>
 
 ## 응용 계층이란?
 
-사용자와 **가장 밀접하게 닿아있는 계층**입니다.  
-웹 브라우저, 이메일 클라이언트, DNS 조회 등 실제로 눈에 보이는 서비스가 여기에 속합니다.
+TCP/IP 4계층 중 사용자와 **직접 맞닿은 최상위 계층**입니다.  
+HTTP, DNS, FTP, SSH 등 실제로 눈에 보이는 서비스가 모두 여기에 속합니다.
 
-| 프로토콜 | 기본 포트 | 전송 계층 |
-|---------|---------|---------|
-| HTTP | 80 | TCP |
-| HTTPS | 443 | TCP |
-| DNS | 53 | UDP (쿼리) / TCP (조회 결과 큰 경우) |
-| FTP | 20, 21 | TCP |
-| SSH | 22 | TCP |
+**주요 응용 계층 프로토콜**
+
+| 프로토콜 | 포트 | 전송 계층 | 역할 |
+|---------|------|---------|------|
+| **HTTP** | 80 | TCP | 웹 |
+| **HTTPS** | 443 | TCP | 보안 웹 |
+| **DNS** | 53 | UDP (조회) / TCP (큰 응답) | 도메인 → IP 변환 |
+| SSH | 22 | TCP | 원격 접속 |
+| FTP | 20, 21 | TCP | 파일 전송 |
+| DHCP | 67, 68 | UDP | IP 자동 할당 |
+| SMTP | 25 | TCP | 이메일 전송 |
 
 ---
 
 ## HTTP (HyperText Transfer Protocol)
 
-### 핵심 특성
+### 네 가지 핵심 특성
 
-**① 요청-응답 기반 프로토콜**
+**① 요청-응답 기반**
 
-HTTP는 클라이언트의 요청과 서버의 응답으로 작동합니다.  
-HTTP 요청 메시지 ≠ HTTP 응답 메시지 — 서로 구조가 다릅니다.
+클라이언트가 요청을 보내면 서버가 응답합니다. 서버가 먼저 보낼 수 없습니다.  
+(단, WebSocket은 양방향 통신 가능)
 
-**② 미디어 독립적 프로토콜 (Media-Independent)**
+**② 미디어 독립적 (Media-Independent)**
 
-자원의 형태(HTML, JSON, 이미지, 영상)에 무관하게 동일한 인터페이스로 주고받습니다.  
-자원 형태는 `Content-Type` 헤더로 표현합니다.
+자원의 형태와 무관하게 동일한 인터페이스로 주고받습니다.  
+자원 형태는 `Content-Type` 헤더로 알립니다.
 
-```
-Content-Type: text/html; charset=utf-8
-Content-Type: application/json
-Content-Type: image/jpeg
-```
+| Content-Type | 의미 |
+|-------------|------|
+| `text/html; charset=utf-8` | HTML 문서 |
+| `application/json` | JSON 데이터 (REST API 응답) |
+| `image/jpeg` | JPEG 이미지 |
+| `multipart/form-data` | 파일 업로드 |
 
-`Type/Subtype` 구조입니다. 추가 설명이 필요하면 `; parameter=value` 를 붙입니다.
+**③ 스테이트리스 (Stateless)**
 
-**③ 스테이트리스 프로토콜 (Stateless)**
+서버는 클라이언트의 이전 요청을 기억하지 않습니다. 각 요청은 독립적입니다.
 
-HTTP는 클라이언트의 이전 상태를 기억하지 않습니다.  
-각 요청을 독립적으로 처리합니다.
-
-**왜 스테이트리스인가?**
-1. 모든 클라이언트 상태를 유지하면 서버 부담이 과도함
-2. 특정 서버에 종속되지 않아 확장성(Scalability) 향상
-3. 서버 하나가 다운돼도 다른 서버로 대체 가능 → 견고성(Robustness)
-
-> **상태가 필요한 경우**: Cookie, Session, JWT 토큰으로 상태를 클라이언트 측에서 관리
+| 항목 | 설명 |
+|------|------|
+| 장점 | 서버 확장 용이, 특정 서버에 종속되지 않음 |
+| 단점 | 상태 유지를 위한 별도 수단 필요 |
+| 해결 방법 | Cookie, Session, **JWT 토큰** (매 요청 헤더에 포함) |
 
 **④ 지속 연결 (Persistent Connection / Keep-Alive)**
 
-HTTP/1.1부터 기본 지원합니다.  
-하나의 TCP 연결로 여러 요청-응답을 처리합니다.  
-매 요청마다 3-way handshake를 반복하지 않아 성능이 크게 향상됩니다.
+HTTP/1.1부터 기본값입니다. 하나의 TCP 연결로 여러 요청·응답을 처리합니다.
+
+<div class="diagram">  [ HTTP/1.0 - 비지속 연결 ]           [ HTTP/1.1 - 지속 연결 ]
+
+  TCP 연결 수립 (3-way handshake)     TCP 연결 수립 (3-way handshake)
+       ↓                                     ↓
+  요청 1 → 응답 1                       요청 1 → 응답 1
+       ↓                                     ↓
+  TCP 연결 종료 (4-way handshake)       요청 2 → 응답 2
+       ↓                                     ↓
+  TCP 연결 수립 (다시!)                  요청 3 → 응답 3
+       ↓                                     ↓
+  요청 2 → 응답 2                       TCP 연결 종료
+       ↓
+  (반복 → 오버헤드 큼)</div>
 
 ---
 
 ## HTTP 메시지 구조
 
-```
-Start Line (요청: Request Line / 응답: Status Line)
-Field Line × n (헤더)  →  0개 이상
-(빈 줄)
-Message Body (페이로드)  →  선택적
-```
+### 요청 메시지 (Request)
 
-### 요청 메시지 — Request Line
+<div class="diagram">  ┌──────────────────────────────────────────────────┐
+  │  Start Line  →  Request Line                      │
+  │  GET   /api/articles?category=spring   HTTP/1.1   │
+  │  ↑메서드   ↑Request Target                          │
+  ├──────────────────────────────────────────────────┤
+  │  Field Lines (헤더, 0개 이상)                       │
+  │  Host: api.example.com                            │
+  │  Accept: application/json                         │
+  │  Authorization: Bearer eyJhbGci...                │
+  ├──────────────────────────────────────────────────┤
+  │  (빈 줄)                                           │
+  ├──────────────────────────────────────────────────┤
+  │  Message Body (선택적)                              │
+  │  { "title": "Spring Boot 시작" }  ← POST 시 포함   │
+  └──────────────────────────────────────────────────┘</div>
 
-```
-Method   Request-Target   HTTP-Version  (줄바꿈)
-GET      /api/articles    HTTP/1.1
-```
+### HTTP 메서드
 
-**HTTP 메서드**
+| 메서드 | 의미 | 멱등성 | 주로 사용하는 상황 |
+|--------|------|-------|----------------|
+| **GET** | 자원 조회 | ✅ | 목록 조회, 단건 조회 |
+| **POST** | 자원 생성 | ❌ | 새 데이터 등록 |
+| **PUT** | 자원 전체 수정 | ✅ | 데이터 전체 교체 |
+| **PATCH** | 자원 일부 수정 | ❌ | 특정 필드만 수정 |
+| **DELETE** | 자원 삭제 | ✅ | 데이터 삭제 |
 
-| 메서드 | 의미 | Spring Boot |
-|--------|------|------------|
-| GET | 자원 조회 | `@GetMapping` |
-| POST | 자원 생성 | `@PostMapping` |
-| PUT | 자원 전체 수정 | `@PutMapping` |
-| PATCH | 자원 일부 수정 | `@PatchMapping` |
-| DELETE | 자원 삭제 | `@DeleteMapping` |
+> **멱등성**: 같은 요청을 여러 번 해도 결과가 동일하면 멱등(idempotent)
 
-### 응답 메시지 — Status Line
+### 응답 메시지 (Response)
 
-```
-HTTP-Version   Status-Code   Reason-Phrase  (줄바꿈)
-HTTP/1.1       200           OK
-```
+<div class="diagram">  ┌──────────────────────────────────────────────────┐
+  │  Start Line  →  Status Line                       │
+  │  HTTP/1.1   201   Created                         │
+  │              ↑상태코드  ↑이유 구문                    │
+  ├──────────────────────────────────────────────────┤
+  │  Field Lines (헤더)                                │
+  │  Content-Type: application/json                   │
+  │  Location: /api/articles/42                       │
+  ├──────────────────────────────────────────────────┤
+  │  (빈 줄)                                           │
+  ├──────────────────────────────────────────────────┤
+  │  Message Body                                     │
+  │  { "id": 42, "title": "Spring Boot 시작" }        │
+  └──────────────────────────────────────────────────┘</div>
 
-**주요 HTTP 상태 코드**
+### HTTP 상태 코드
 
-| 코드 | 의미 | 사용 시점 |
-|------|------|----------|
-| 200 OK | 성공 | GET, PUT 성공 |
-| 201 Created | 생성 성공 | POST 성공 |
-| 204 No Content | 응답 본문 없음 | DELETE 성공 |
-| 301 Moved Permanently | 영구 이동 | URL 변경 |
-| 400 Bad Request | 잘못된 요청 | 유효성 검사 실패 |
-| 401 Unauthorized | 인증 실패 | 로그인 필요 |
-| 403 Forbidden | 권한 없음 | 접근 거부 |
-| 404 Not Found | 자원 없음 | 없는 ID 조회 |
-| 500 Internal Server Error | 서버 오류 | 예상치 못한 에러 |
+| 분류 | 범위 | 의미 |
+|------|------|------|
+| 1xx | 100~199 | 정보 (요청 처리 중) |
+| 2xx | 200~299 | 성공 |
+| 3xx | 300~399 | 리다이렉션 |
+| 4xx | 400~499 | 클라이언트 오류 |
+| 5xx | 500~599 | 서버 오류 |
+
+**자주 쓰이는 상태 코드 — Spring Boot REST API에서 사용**
+
+| 코드 | 이름 | 사용 시점 |
+|------|------|---------|
+| **200** OK | 성공 | GET 성공, PUT 성공 |
+| **201** Created | 생성 성공 | POST 성공 |
+| **204** No Content | 응답 본문 없음 | DELETE 성공 |
+| **301** Moved Permanently | 영구 이동 | URL 변경 |
+| **400** Bad Request | 잘못된 요청 | 유효성 검사 실패 |
+| **401** Unauthorized | 인증 실패 | 로그인 필요 |
+| **403** Forbidden | 권한 없음 | 접근 거부 |
+| **404** Not Found | 자원 없음 | 없는 ID 조회 |
+| **500** Internal Server Error | 서버 오류 | 예상치 못한 예외 |
 
 ---
 
 ## URI, URL, URN
 
-**URI (Uniform Resource Identifier)**: 자원을 **식별**할 수 있는 정보
+<div class="diagram">  URI (Uniform Resource Identifier)
+  ┌─────────────────────────────────────────┐
+  │  자원을 식별할 수 있는 모든 정보             │
+  │                                          │
+  │  ┌──────────────────────────────────┐   │
+  │  │  URL (Locator) — 위치로 식별       │   │
+  │  │  https://api.example.com/articles │   │
+  │  └──────────────────────────────────┘   │
+  │                                          │
+  │  ┌──────────────────────────────────┐   │
+  │  │  URN (Name) — 이름으로 식별        │   │
+  │  │  urn:isbn:979-11-91905-27-4       │   │
+  │  └──────────────────────────────────┘   │
+  └─────────────────────────────────────────┘</div>
 
-```
-URI
- ├── URL — 자원의 위치(어떻게 접근할지)
- └── URN — 자원의 고유 이름
-```
+### URL 구조 분해
 
-### URL 구조
+<div class="diagram">  https://api.example.com:8080/articles?category=spring&page=1#section2
+  ─────   ───────────────  ────  ────────  ────────────────────  ────────
+  scheme     authority     port    path         query string      fragment
+   (프로토콜)  (호스트명)    (포트)  (경로)    (key=value 파라미터)   (앵커)</div>
 
-```
-foo://www.example.com:8042/over/there?name=ferret#nose
- │         │          │       │           │        │
-scheme   authority   port   path        query   fragment
-(HTTP)   (호스트)         (경로)    (쿼리 파라미터) (앵커)
-```
-
-**실제 예시**
-
-```
-https://api.example.com/articles?category=spring&sorted=true#section1
-
-scheme   = https
-authority = api.example.com
-path      = /articles
-query     = category=spring&sorted=true   ← key=value 형태의 Dictionary
-fragment  = section1                       ← HTML 특정 위치 이동
-```
-
-**쿼리 파라미터 (Query String)**
-
-Spring Boot에서 `@RequestParam`으로 받는 값입니다.
-
-```java
-// GET /articles?category=spring&page=1
-@GetMapping("/articles")
-public List<ArticleResponse> list(
-    @RequestParam String category,
-    @RequestParam(defaultValue = "1") int page) { ... }
-```
+| 구성 요소 | 예시 | 설명 |
+|---------|------|------|
+| scheme | `https` | 프로토콜 지정 |
+| authority | `api.example.com` | 호스트명 (도메인 또는 IP) |
+| port | `:8080` | 생략 시 scheme 기본 포트 (http=80, https=443) |
+| path | `/articles` | 자원 경로 |
+| query | `?category=spring&page=1` | key=value 형태, `&`로 구분 |
+| fragment | `#section2` | HTML 특정 위치 이동 (서버로 전달 안 됨) |
 
 ---
 
 ## DNS (Domain Name System)
 
-IP 주소만으로 수신지를 특정하기 어려워 만든 프로토콜입니다.  
-**도메인 이름 → IP 주소로 변환(resolve)** 합니다.
+IP 주소만으로 서버를 기억하기 어려워서, **도메인 이름 → IP 주소** 로 변환합니다.
 
-```
-예: www.example.com → 203.0.113.1
-```
+### DNS 도메인 계층 구조
 
-`hosts` 파일로 개인 도메인↔IP 매핑을 수동 지정할 수도 있습니다.
+<div class="diagram">  www    .    example    .    com    .
+   ↑            ↑             ↑        ↑
+   │            │             │        └── 루트 도메인 (보통 생략)
+   │            │             └────────── TLD (Top Level Domain)
+   │            └──────────────────────── 2단계 도메인
+   └───────────────────────────────────── 서브 도메인</div>
 
-### DNS 계층 구조
+**주요 TLD 종류**
 
-```
-www . example . com .
- │       │       │   └── 루트 도메인 (보통 생략)
- │       │       └────── TLD (최상위 도메인, .com/.net/.kr 등)
- │       └────────────── 2단계 도메인
- └────────────────────── 3단계(서브) 도메인
-```
+| TLD | 의미 |
+|-----|------|
+| .com | 상업적 목적 (일반) |
+| .net | 네트워크 관련 |
+| .org | 비영리 기관 |
+| .kr | 한국 ccTLD |
+| .io | 개발자/스타트업 선호 |
 
-**FQDN (Fully Qualified Domain Name)**: `www.example.com.` 과 같이 루트 도메인까지 포함한 전체 도메인 이름
+### DNS 질의 흐름 (재귀적 조회)
 
-### DNS 질의 과정
+<div class="diagram">  [클라이언트]         [로컬 네임서버]     [루트 네임서버]  [TLD 네임서버]  [책임 네임서버]
+       │                     │                   │               │               │
+  ① "www.example.com         │                   │               │               │
+     IP 주소 알려줘" ────────→│                   │               │               │
+       │                     │ ② "모르니까        │               │               │
+       │                     │    루트에 물어봄"  │               │               │
+       │                     │──────────────────→│               │               │
+       │                     │ ③ ".com 담당은     │               │               │
+       │                     │    여기야" ←───────│               │               │
+       │                     │──────────────────────────────────→│               │
+       │                     │ ④ "example.com 담당│               │               │
+       │                     │    은 여기야" ←─────────────────── │               │
+       │                     │──────────────────────────────────────────────────→│
+       │                     │ ⑤ "93.184.216.34" ←──────────────────────────────│
+       │ ⑥ "93.184.216.34" ←─│
+       │    (캐시 저장)        │</div>
 
-```
-클라이언트
-   │── ① 로컬 네임 서버에 질의 (ISP 제공 / 또는 8.8.8.8)
-         └── ② 루트 네임 서버 질의 (루트 도메인 관장)
-                  └── ③ TLD 네임 서버 질의 (.com 관장)
-                           └── ④ 책임(권한) 네임 서버 질의 (example.com 관장)
-                                    └── IP 주소 반환
-```
+**DNS 캐시와 TTL**
 
-**재귀적 질의**: 로컬 네임 서버가 대신 모든 단계를 거쳐 결과를 클라이언트에 반환  
-**반복적 질의**: 클라이언트가 각 서버에 직접 단계별로 질의
+| 항목 | 설명 |
+|------|------|
+| DNS 캐시 | 조회 결과를 TTL 동안 임시 저장 |
+| TTL | 캐시 유효 시간 (짧으면 빠른 반영, 길면 부하 감소) |
+| 효과 | 루트 네임서버 과부하 방지, 조회 속도 향상 |
 
-**DNS 캐시**: 네임 서버가 응답 결과를 TTL 동안 임시 저장합니다.  
-같은 질의가 오면 캐시에서 바로 반환 → 루트 네임 서버 과부하 방지
+### DNS 레코드 타입
+
+| 레코드 | 역할 | 예시 |
+|--------|------|------|
+| **A** | 도메인 → IPv4 주소 | example.com → 93.184.216.34 |
+| **AAAA** | 도메인 → IPv6 주소 | - |
+| **CNAME** | 도메인 → 다른 도메인 (별칭) | www.example.com → example.com |
+| **MX** | 도메인의 메일 서버 지정 | - |
+| **TXT** | 텍스트 정보 (SPF, 도메인 인증 등) | - |
+| **NS** | 네임서버 지정 | - |
 
 ---
 
 ## ICMP (Internet Control Message Protocol)
 
-IP 패킷 전달 과정의 오류나 진단 정보를 전달합니다.  
-`ping` 명령어가 ICMP를 사용합니다.
+IP 패킷 전달 과정의 **오류 메시지와 진단 정보**를 전달합니다.  
+데이터 전송용이 아닌 네트워크 상태 확인용 보조 프로토콜입니다.
 
-```
-ping google.com   →   ICMP Echo Request / Echo Reply
-traceroute        →   ICMP Time Exceeded (TTL 만료)
-```
-
-**ICMP = IP 보조 프로토콜** (신뢰성 완전 보장 X)
+| ICMP 메시지 타입 | 의미 | 활용 도구 |
+|---------------|------|---------|
+| Echo Request / Reply | 호스트 도달 여부 확인 | `ping` |
+| Time Exceeded | TTL 만료로 패킷 폐기 | `traceroute` |
+| Destination Unreachable | 목적지 도달 불가 | 오류 진단 |
+| Redirect | 더 나은 경로 안내 | 라우터 경로 최적화 |
 
 ---
 
-## 백엔드 / AWS에서의 응용 계층
+## AWS / Spring Boot에서 응용 계층 적용
 
 | 개념 | AWS / Spring Boot 적용 |
 |------|----------------------|
-| HTTP 요청/응답 | Spring Boot REST API (`@RestController`) |
+| HTTP 요청/응답 | Spring Boot `@RestController` — 요청 수신, 응답 반환 |
+| HTTP 메서드 | `@GetMapping`, `@PostMapping`, `@DeleteMapping` 등 |
 | 상태 코드 | `ResponseEntity.status(HttpStatus.CREATED)` |
-| DNS 조회 | Route 53 (AWS의 DNS 서비스) |
-| HTTPS | ACM(인증서) + ALB로 SSL 종료 |
-| 지속 연결 | Spring Boot 내장 Tomcat의 Keep-Alive 기본 지원 |
-| URI 설계 | RESTful API: `/articles/{id}` |
-| 쿼리 파라미터 | `@RequestParam` |
+| Stateless | 매 요청마다 Authorization 헤더에 JWT 토큰 포함 |
+| Keep-Alive | Spring Boot 내장 Tomcat 기본 지원 |
+| DNS | AWS Route 53 (A 레코드: 도메인 → ALB IP) |
+| HTTPS | AWS ACM 인증서 + ALB에서 SSL 종료 |
+| CNAME | ALB 도메인을 CNAME으로 서비스 도메인에 매핑 |
 
-### Spring Boot에서 HTTP 상태 코드 반환
+**API 설계와 HTTP 상태 코드 매핑 예시**
 
-```java
-@PostMapping("/articles")
-public ResponseEntity<ArticleResponse> create(@RequestBody ArticleRequest req) {
-    ArticleResponse response = articleService.save(req);
-    return ResponseEntity
-            .status(HttpStatus.CREATED)   // 201
-            .body(response);
-}
-
-@DeleteMapping("/articles/{id}")
-public ResponseEntity<Void> delete(@PathVariable Long id) {
-    articleService.delete(id);
-    return ResponseEntity.noContent().build();  // 204
-}
-```
-
-<div class="callout callout-src">
-  <div class="callout-title">📝 학습 메모</div>
-  HTTP Stateless 개념이 Spring Boot API 설계에 직결됩니다.<br>
-  서버가 상태를 저장하지 않으므로 인증 정보(JWT 토큰 등)를 매 요청마다 Header에 실어야 합니다.<br>
-  AWS Route 53으로 도메인 등록 시 DNS 질의 흐름이 정확히 이 과정을 거칩니다.
-</div>
+| API | 메서드 | 성공 응답 코드 | 실패 응답 코드 |
+|-----|--------|------------|------------|
+| 글 목록 조회 | GET | 200 OK | 500 Internal Server Error |
+| 글 단건 조회 | GET | 200 OK | 404 Not Found |
+| 글 등록 | POST | 201 Created | 400 Bad Request |
+| 글 수정 | PUT | 200 OK | 404 Not Found |
+| 글 삭제 | DELETE | 204 No Content | 404 Not Found |
 
 ## 정리
 
-- **HTTP**: 요청-응답 기반, 미디어 독립적, **Stateless**, 지속 연결
-- **HTTP 메서드**: GET/POST/PUT/PATCH/DELETE → Spring Boot `@XxxMapping` 직접 대응
-- **상태 코드**: 200/201/204/400/401/403/404/500 필수 암기
-- **URI/URL**: scheme + authority + path + query + fragment
-- **DNS**: 도메인 → IP 변환, 캐시로 성능 최적화, AWS Route 53
-- **ICMP**: `ping`, `traceroute` 진단 도구
+| 개념 | 핵심 |
+|------|------|
+| HTTP | 요청-응답, 미디어 독립, **Stateless**, Keep-Alive |
+| HTTP 메서드 | GET/POST/PUT/PATCH/DELETE → Spring Boot Mapping 직접 대응 |
+| 상태 코드 | 200/201/204/400/401/403/404/500 필수 암기 |
+| URI / URL | scheme + authority + port + path + query + fragment |
+| DNS | 도메인 → IP, 계층적 조회 후 캐시 저장, AWS Route 53 |
+| ICMP | 네트워크 진단 프로토콜 |

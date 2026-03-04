@@ -13,9 +13,9 @@ permalink: /archive/
     <span class="arc-date">{{ post.date | date: "%m.%d" }}</span>
     <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     {% if post.categories[0] == "springboot" %}
-      <span class="badge badge-sb" style="font-size:.6rem;">SB</span>
+      <span class="badge badge-sb" style="font-size:.58rem;">SB</span>
     {% elsif post.categories[0] == "network" %}
-      <span class="badge badge-net" style="font-size:.6rem;">NET</span>
+      <span class="badge badge-net" style="font-size:.58rem;">NET</span>
     {% endif %}
   </li>
   {% endfor %}
