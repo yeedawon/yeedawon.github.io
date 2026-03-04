@@ -152,11 +152,8 @@ IP 주소만으로 서버를 기억하기 어려워서, **도메인 이름 → I
 | .kr | 한국 ccTLD |
 | .io | 개발자/스타트업 선호 |
 
-### DNS 질의 흐름 (재귀적 조회)
 
-<img src="/assets/images/network/post3-http-dns-uri/dns-query.svg" alt="DNS 질의 흐름" style="max-width: 100%;">
-
-**DNS 캐시와 TTL**
+## DNS 캐시와 TTL**
 
 | 항목 | 설명 |
 |------|------|
