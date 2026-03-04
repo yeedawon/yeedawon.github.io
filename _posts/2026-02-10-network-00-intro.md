@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Network] 시리즈 소개 — 네트워크 기초부터 응용 계층까지"
+title: "[Network]게시글 소개"
 date: 2026-02-10
 categories: [network]
 tags: [network, study, intro]
