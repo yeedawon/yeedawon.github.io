@@ -5,16 +5,18 @@ permalink: /about/
 ---
 
 ## Introduction myself
-건국대학교 컴퓨공학부 재학중 (2025~) (KU자유전공학부 => 컴퓨터공학부 / 응용통계학과)
-> *Freshman Dept. of Free Major (1st) → Computer Science / Appllied Statistics (2nd)*
+
+건국대학교 컴퓨터공학부 재학중 (2025~) (KU자유전공학부 => 컴퓨터공학부 / 응용통계학과)
+
+> *Freshman Dept. of Free Major (1st) → Computer Science / Applied Statistics (2nd)*
 
 ## 🛠 현재 학습 중
 
-- **Backend && Network** 
+- **Backend && Network**
 - **Cloud** — (AWS)
-- **Tools** — Git, IntelliJ IDEA, JAVA | (공부 중) Python, C++, R 
-- **AI** - Deep Learning(신경망/CNN/RAG ~ ing)
-- **Statistics** 
+- **Tools** — Git, IntelliJ IDEA, JAVA \| (공부 중) Python, C++, R
+- **AI** — Deep Learning (신경망 / CNN / RAG ~ ing)
+- **Statistics**
 
 ## 📚 진행 중인 학습 post
 
