@@ -2,7 +2,7 @@
 layout: post
 title: "[Signal Processing] Signal Processing First — Chapter 2: Sinusoids"
 date: 2026-02-10
-categories: [network]
+categories: [AI]
 tags: [signal, AI, CNN, deeplearning]
 author: yeedawon
 excerpt: "introduction of signal processing && sinusoids"

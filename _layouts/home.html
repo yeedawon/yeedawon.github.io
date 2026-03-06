@@ -28,6 +28,11 @@ layout: default
     <div style="margin-top:1.4rem; padding-top:1.1rem; border-top:1px solid var(--faint);">
       {% assign sb_posts  = site.posts | where: "categories", "springboot" %}
       {% assign net_posts = site.posts | where: "categories", "network" %}
+      {% assign AI_posts = site.posts | where: "categories", "AI" %}
+      {% assign algo_posts = site.posts | where: "categories", "algorithm" %}
+      {% assign ds_posts = site.posts | where: "categories", "datastructure" %}
+      {% assign rp_posts = site.posts | where: "categories", "R" %}
+      {% assign oop_posts = site.posts | where: "categories", "Object-Oriented_Programming" %}
       <div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.08em;text-transform:uppercase;">Posts</div>
       <div style="font-size:.78rem;color:#555;">
         <div style="display:flex;justify-content:space-between;padding:.22rem 0;border-bottom:1px solid var(--faint);">
@@ -65,6 +70,18 @@ layout: default
               <span class="badge badge-sb">Spring Boot</span>
             {% elsif post.categories[0] == "network" %}
               <span class="badge badge-net">Network</span>
+            {% elsif post.categories[0] == "algorithm" %}
+              <span class="badge badge-algo">Algorithm</span>
+            {% elsif post.categories[0] == "data-structure" %}
+              <span class="badge badge-ds">Data Structure</span>
+            {% elsif post.categories[0] == "rp" %}
+              <span class="badge badge-rp">RP</span>
+            {% elsif post.categories[0] == "oop" %}
+              <span class="badge badge-oop">OOP</span>
+            {% elsif post.categories[0] == "stats" %}
+              <span class="badge badge-stats">Statistics</span>
+            {% elsif post.categories[0] == "AI" %}
+              <span class="badge badge-AI">AI</span>
             {% else %}
               <span class="badge badge-etc">{{ post.categories[0] }}</span>
             {% endif %}
